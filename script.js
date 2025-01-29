@@ -39,26 +39,56 @@ function numericalClicked(number) {
         display.value = display.value + number;
         firstOperand = display.value;
     } else if (currentStage === 'second operand') {
+        toggleOperator();
         display.value = display.value + number;
         secondOperand = display.value;
     }  
 }
 
 function operatorClicked(input) {
+    if (operator) toggleOperator();
+    //make it so that operator can only work when firstOperand exists later
     currentStage = 'operator';
     display.value = input;
     operator = display.value;
+    toggleOperator();
 }
 
 function equalClicked() {
     if (!firstOperand || !operator || !secondOperand) {
         console.log('operation is not complete yet!');
     } else {
-        display.value = operate(firstOperand, operator, secondOperand);
-        //console.log(`${firstOperand} ${operator} ${secondOperand}`);
+        let result = operate(firstOperand, operator, secondOperand);
+        display.value = result;
+        firstOperand = result;
+        operator = undefined;
+        secondOperand = undefined;
     }
     // else call the operate function and make result first operand
     // unless AC is clicked!
+}
+
+function toggleOperator() {
+    let findOperator;
+    switch (operator) {
+        case '+':
+            findOperator = 'add';
+            break;
+        case '-':
+            findOperator = 'subtract';
+            break;
+        case 'x':
+            findOperator = 'multiply';
+            break;
+        case '÷':
+            findOperator = 'divide';
+            break;
+        default:
+            console.log('Error: No valid operator!');
+    }
+
+    const operatorButton = document.querySelector(`.${findOperator}`);
+    operatorButton.classList.toggle('active-operator');
 }
 
 function buttonClick(event) {

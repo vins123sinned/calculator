@@ -24,6 +24,7 @@ button {
     font-size: 28px;
     margin: 3px;
     color: #FFF;
+    background-color: #FF9500;
 }
 
 .calculator-container {
@@ -80,6 +81,6 @@ button {
     flex-direction: column;
 }
 
-.buttons-right button {
-    background-color: #FF9500;
+.active-operator {
+    background-color: #f8b353;
 }
