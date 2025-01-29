@@ -6,34 +6,51 @@
         <title>A Simple Calculator</title>
         <link rel="stylesheet" href="./styles.css">
         <script src="./script.js" defer></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=backspace" />
     </head>
     <body>
         <div class="calculator-container">
-            <input type="text" class="input-text">
-            <div class="calculator-buttons">
-                <div class="buttons-left">
-                    <button type="button" class="button-top-row">AC</button>
-                    <button type="button" class="button-top-row">+/-</button>
-                    <button type="button" class="button-top-row">%</button>
-                    <button type="button">7</button>
-                    <button type="button">8</button>
-                    <button type="button">9</button>
-                    <button type="button">4</button>
-                    <button type="button">5</button>
-                    <button type="button">6</button>
-                    <button type="button">1</button>
-                    <button type="button">2</button>
-                    <button type="button">3</button>
-                    <button type="button">Backspace</button>
-                    <button type="button">0</button>
-                    <button type="button">.</button>
-                </div>
-                <div class="buttons-right">
-                    <button type="button">÷</button>
-                    <button type="button">x</button>
-                    <button type="button">-</button>
-                    <button type="button">+</button>
-                    <button type="button">=</button>
+            <div class="calculator">
+                <input type="text" class="input-text">
+                <div class="calculator-buttons">
+                    <div class="buttons-left">
+                        <div class="top-buttons-row">
+                            <button type="button" class="button-top-row">AC</button>
+                            <button type="button" class="button-top-row">+/-</button>
+                            <button type="button" class="button-top-row">%</button>
+                        </div>
+                        <div class="buttons-row">
+                            <button type="button">7</button>
+                            <button type="button">8</button>
+                            <button type="button">9</button>
+                        </div>
+                        <div class="buttons-row">
+                            <button type="button">4</button>
+                            <button type="button">5</button>
+                            <button type="button">6</button>
+                        </div>
+                        <div class="buttons-row">
+                            <button type="button">1</button>
+                            <button type="button">2</button>
+                            <button type="button">3</button>
+                        </div>
+                        <div class="buttons-row">
+                            <button type="button">
+                                <span class="material-symbols-outlined">
+                                    backspace
+                                </span>
+                            </button>
+                            <button type="button">0</button>
+                            <button type="button">.</button>
+                        </div>
+                    </div>
+                    <div class="buttons-right">
+                        <button type="button">÷</button>
+                        <button type="button">x</button>
+                        <button type="button">-</button>
+                        <button type="button">+</button>
+                        <button type="button">=</button>
+                    </div>
                 </div>
             </div>
         </div>
