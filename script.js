@@ -31,6 +31,7 @@ function operate(operand1, operator, operand2) {
 
 function numericalClicked(number) {
     if (currentStage === 'operator') {
+        toggleOperator();
         display.value = '';
         currentStage = 'second operand';
     }
@@ -39,16 +40,15 @@ function numericalClicked(number) {
         display.value = display.value + number;
         firstOperand = display.value;
     } else if (currentStage === 'second operand') {
-        toggleOperator();
         display.value = display.value + number;
         secondOperand = display.value;
     }  
 }
 
 function operatorClicked(input) {
-    currentStage = 'operator';
-    //this returns an error... find out why!
     if (!firstOperand) return;
+    currentStage = 'operator';
+
     // Evaluate and display first pair of number
     if (secondOperand) {
         equalClicked();
@@ -71,13 +71,15 @@ function equalClicked() {
         firstOperand = result;
         operator = undefined;
         secondOperand = undefined;
+        checkOverflow();
     }
-    // else call the operate function and make result first operand
-    // unless AC is clicked!
+    // If AC is clicked, reset completely
+
 }
 
 function toggleOperator() {
     if (!operator) return;
+
     let findOperator;
     switch (operator) {
         case '+':
@@ -113,6 +115,23 @@ function buttonClick(event) {
         numericalClicked(currentButtonValue);
     } else {
         operatorClicked(currentButtonValue);
+    }
+}
+
+function checkOverflow() {
+    // 13 is the arbitrary number I chose for when input starts overflowing
+    const dotIndex = display.value.indexOf('.');
+    console.log(display.value);
+    console.log(dotIndex);
+    const displayLength = display.value.length - 1;
+    const spaceAvailable = 13 - dotIndex;
+
+    // Checks if decimal places are greater than 2 and is overflowing
+    if (dotIndex !== -1 && displayLength - dotIndex > 2 && displayLength >= 14) {
+        display.value = parseFloat(display.value).toFixed(spaceAvailable);
+    } else if (displayLength >= 13) {
+        console.log('round!');
+        display.value = display.value.slice(0, 13);
     }
 }
 
