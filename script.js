@@ -46,12 +46,20 @@ function numericalClicked(number) {
 }
 
 function operatorClicked(input) {
-    if (operator) toggleOperator();
-    //make it so that operator can only work when firstOperand exists later
     currentStage = 'operator';
-    display.value = input;
-    operator = display.value;
-    toggleOperator();
+    //this returns an error... find out why!
+    if (!firstOperand) return;
+    // Evaluate and display first pair of number
+    if (secondOperand) {
+        equalClicked();
+        display.value = firstOperand;
+    }
+
+    if (!secondOperand) {
+        if (operator) toggleOperator();
+        operator = input;
+        toggleOperator();
+    }
 }
 
 function equalClicked() {
@@ -69,6 +77,7 @@ function equalClicked() {
 }
 
 function toggleOperator() {
+    if (!operator) return;
     let findOperator;
     switch (operator) {
         case '+':
@@ -96,7 +105,7 @@ function buttonClick(event) {
     let currentButtonValue = event.target.textContent;
 
     if (currentButtonValue === '=') {
-        equalClicked(event);
+        equalClicked();
         return;
     }
 
