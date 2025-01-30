@@ -109,6 +109,9 @@ function buttonClick(event) {
     if (currentButtonValue === '=') {
         equalClicked();
         return;
+    } else if (currentButtonValue === 'AC') {
+        clearClicked();
+        return;
     }
 
     if (numerical.includes(currentButtonValue)) {
@@ -121,8 +124,6 @@ function buttonClick(event) {
 function checkOverflow() {
     // 13 is the arbitrary number I chose for when input starts overflowing
     const dotIndex = display.value.indexOf('.');
-    console.log(display.value);
-    console.log(dotIndex);
     const displayLength = display.value.length - 1;
     const spaceAvailable = 13 - dotIndex;
 
@@ -133,6 +134,15 @@ function checkOverflow() {
         console.log('round!');
         display.value = display.value.slice(0, 13);
     }
+}
+
+function clearClicked() {
+    toggleOperator();
+    display.value = '';
+    operator = undefined;
+    firstOperand = undefined;
+    secondOperand = undefined;
+    currentStage = 'first operand';
 }
 
 let operator;
