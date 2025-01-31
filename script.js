@@ -11,6 +11,10 @@ function multiply(num1, num2) {
 }
 
 function divide(num1, num2) {
+    if (num2 === '0') {
+        setTimeout(clearClicked, 1000);
+        return 'Nice Try!';
+    }
     return parseFloat(num1) / parseFloat(num2);
 }
 
@@ -30,6 +34,7 @@ function operate(operand1, operator, operand2) {
 }
 
 function numericalClicked(number) {
+
     if (currentStage === 'operator') {
         toggleOperator();
         display.value = '';
