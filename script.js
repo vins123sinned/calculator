@@ -34,7 +34,6 @@ function operate(operand1, operator, operand2) {
 }
 
 function numericalClicked(number) {
-
     if (currentStage === 'operator') {
         toggleOperator();
         display.value = '';
@@ -108,15 +107,19 @@ function toggleOperator() {
 }
 
 function buttonClick(event) {
-    const numerical = '1234567890.';
+    const numerical = '1234567890';
     let currentButtonValue = event.target.textContent;
 
-    if (currentButtonValue === '=') {
-        equalClicked();
-        return;
-    } else if (currentButtonValue === 'AC') {
-        clearClicked();
-        return;
+    switch (currentButtonValue) {
+        case '=':
+            equalClicked();
+            return;
+        case 'AC':
+            clearClicked();
+            return;
+        case '.':
+            dotClicked();
+            return;
     }
 
     if (numerical.includes(currentButtonValue)) {
@@ -136,7 +139,6 @@ function checkOverflow() {
     if (dotIndex !== -1 && displayLength - dotIndex > 2 && displayLength >= 14) {
         display.value = parseFloat(display.value).toFixed(spaceAvailable);
     } else if (displayLength >= 13) {
-        console.log('round!');
         display.value = display.value.slice(0, 13);
     }
 }
@@ -148,6 +150,12 @@ function clearClicked() {
     firstOperand = undefined;
     secondOperand = undefined;
     currentStage = 'first operand';
+}
+
+function dotClicked() {
+    if (display.value.indexOf('.') === -1) {
+        display.value += '.';
+    }
 }
 
 let operator;
