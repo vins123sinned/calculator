@@ -52,6 +52,7 @@ function numericalClicked(number) {
 function operatorClicked(input) {
     if (firstOperand === undefined) return;
     currentStage = 'operator';
+    console.log(currentStage)
 
     // Evaluate and display first pair of number
     if (secondOperand) {
@@ -77,6 +78,7 @@ function equalClicked() {
         firstOperand = result;
         operator = undefined;
         secondOperand = undefined;
+        currentStage = 'first operand';
         checkOverflow();
     }
     // If AC is clicked, reset completely
@@ -112,7 +114,6 @@ function buttonClick(event) {
     const numerical = '1234567890';
     const operators = '÷x-+';
     let currentButtonValue = event.target.textContent;
-    console.log(currentButtonValue)
 
     // Have two conditionals for backspace so that both the button itself
     // and the material icon click will invoke the backspace function
@@ -160,8 +161,6 @@ function dotClicked() {
 }
 
 function backspaceClicked() {
-    if (display.value.length === 0 && currentStage === 'first operand') return;
-
     let value = display.value;
     if (currentStage === 'first operand') {
         display.value = value.substring(0, value.length - 1);
@@ -173,6 +172,14 @@ function backspaceClicked() {
         }
         display.value = value.substring(0, value.length - 1);
         secondOperand = display.value;
+    }
+
+    if (display.value.length === 0 && currentStage === 'first operand') {
+        firstOperand = undefined;
+        return;
+    } else if (display.value.length === 0 && currentStage === 'second operand') {
+        secondOperand = undefined;
+        return;
     }
 }
 
@@ -195,7 +202,6 @@ function beforeInputChange(event) {
         event.data === '-' ||
         event.data === '*' ||
         event.data === '/') {
-            console.log(currentStage)
             event.preventDefault();
             if (event.data === '/') {
                 operatorClicked('÷');
@@ -217,7 +223,10 @@ function beforeInputChange(event) {
 }
 
 function afterInputChange() {
-    if (display.value.length === 0 && currentStage === 'second operand') {
+    if (display.value.length === 0 && currentStage === 'first operand') {
+        firstOperand = undefined;
+        return;
+    } else if (display.value.length === 0 && currentStage === 'second operand') {
         toggleOperator();
         currentStage = 'operator';
         secondOperand = undefined;
@@ -226,10 +235,8 @@ function afterInputChange() {
 
     if (currentStage === 'first operand') {
         firstOperand = display.value;
-        console.log(firstOperand);
     } else if (currentStage === 'second operand') {
         secondOperand = display.value;
-        console.log(secondOperand);
     }
 }
 
@@ -242,7 +249,8 @@ function keyDown(event) {
 }
 
 function invertNumber() {
-    if (currentStage === 'first operand' || currentStage === 'operator') {
+    if (currentStage === 'first operand' ||
+        currentStage === 'operator' && operator) {
         if (!firstOperand) return;
         firstOperand = -firstOperand;
         display.value = firstOperand;
