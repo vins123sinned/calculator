@@ -195,6 +195,7 @@ function beforeInputChange(event) {
         event.data === '-' ||
         event.data === '*' ||
         event.data === '/') {
+            console.log(currentStage)
             event.preventDefault();
             if (event.data === '/') {
                 operatorClicked('÷');
@@ -216,10 +217,19 @@ function beforeInputChange(event) {
 }
 
 function afterInputChange() {
+    if (display.value.length === 0 && currentStage === 'second operand') {
+        toggleOperator();
+        currentStage = 'operator';
+        secondOperand = undefined;
+        return;
+    }
+
     if (currentStage === 'first operand') {
         firstOperand = display.value;
+        console.log(firstOperand);
     } else if (currentStage === 'second operand') {
         secondOperand = display.value;
+        console.log(secondOperand);
     }
 }
 
@@ -259,6 +269,3 @@ display.addEventListener('keydown', keyDown);
 buttons.forEach((button) => {
     button.addEventListener('click', buttonClick);
 });
-
-//fix calculator bugs
-// when second button is backspaced and empty, go back to operator selection
