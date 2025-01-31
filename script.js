@@ -169,7 +169,51 @@ function backspaceClicked() {
         }
         display.value = value.substring(0, value.length - 1);
         secondOperand = display.value;
-        console.log(secondOperand)
+    }
+}
+
+function beforeInputChange(event) {
+    const acceptedCharacters = '1234567890.+-/*';
+    const numerals = '1234567890';
+    if (!acceptedCharacters.includes(event.data)) {
+        event.preventDefault();
+    }
+    
+    if (event.data === '.') {
+        if (display.value.indexOf('.') !== -1) {
+            event.preventDefault();
+        }
+    } else if (event.data === '=') {
+        equalClicked();
+    } else if (event.data === '+' ||
+        event.data === '-' ||
+        event.data === '*' ||
+        event.data === '/') {
+            event.preventDefault();
+            if (event.data === '/') {
+                operatorClicked('÷');
+                return;
+            } else if (event.data === '*') {
+                operatorClicked('x');
+                return;
+            }
+            operatorClicked(event.data);
+    }
+
+    if (numerals.includes(event.data)) {
+        if (currentStage === 'operator') {
+            toggleOperator();
+            display.value = '';
+            currentStage = 'second operand';
+        }
+    }
+}
+
+function afterInputChange() {
+    if (currentStage === 'first operand') {
+        firstOperand = display.value;
+    } else if (currentStage === 'second operand') {
+        secondOperand = display.value;
     }
 }
 
@@ -180,6 +224,10 @@ let currentStage = 'first operand';
 
 const buttons = document.querySelectorAll('button');
 const display = document.querySelector('.display');
+
+display.addEventListener('beforeinput', beforeInputChange);
+display.addEventListener('input', afterInputChange)
+
 
 buttons.forEach((button) => {
     button.addEventListener('click', buttonClick);
