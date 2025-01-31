@@ -108,23 +108,20 @@ function toggleOperator() {
 
 function buttonClick(event) {
     const numerical = '1234567890';
+    const operators = '÷x-+';
     let currentButtonValue = event.target.textContent;
 
-    switch (currentButtonValue) {
-        case '=':
-            equalClicked();
-            return;
-        case 'AC':
-            clearClicked();
-            return;
-        case '.':
-            dotClicked();
-            return;
-    }
+    // Have two conditionals for backspace so that both the button itself
+    // and the material icon click will invoke the backspace function
+    if (event.target.classList.contains('backspace')) return backspaceClicked();
+    if (event.target.firstChild.textContent === 'backspace') return backspaceClicked();
+    if (currentButtonValue === '=') return equalClicked();
+    if (currentButtonValue === 'AC') return clearClicked();
+    if (currentButtonValue === '.') return dotClicked();
 
     if (numerical.includes(currentButtonValue)) {
         numericalClicked(currentButtonValue);
-    } else {
+    } else if (operators.includes(currentButtonValue)) {
         operatorClicked(currentButtonValue);
     }
 }
@@ -155,6 +152,24 @@ function clearClicked() {
 function dotClicked() {
     if (display.value.indexOf('.') === -1) {
         display.value += '.';
+    }
+}
+
+function backspaceClicked() {
+    if (display.value.length === 0 && currentStage === 'first operand') return;
+
+    let value = display.value;
+    if (currentStage === 'first operand') {
+        display.value = value.substring(0, value.length - 1);
+        firstOperand = display.value;
+    } else if (currentStage === 'second operand') {
+        if (display.value.length === 0) {
+            currentStage = 'operator';
+            toggleOperator();
+        }
+        display.value = value.substring(0, value.length - 1);
+        secondOperand = display.value;
+        console.log(secondOperand)
     }
 }
 
