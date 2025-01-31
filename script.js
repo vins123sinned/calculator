@@ -50,7 +50,7 @@ function numericalClicked(number) {
 }
 
 function operatorClicked(input) {
-    if (!firstOperand) return;
+    if (firstOperand === undefined) return;
     currentStage = 'operator';
 
     // Evaluate and display first pair of number
@@ -59,7 +59,7 @@ function operatorClicked(input) {
         display.value = firstOperand;
     }
 
-    if (!secondOperand) {
+    if (secondOperand === undefined) {
         if (operator) toggleOperator();
         operator = input;
         toggleOperator();
@@ -67,7 +67,9 @@ function operatorClicked(input) {
 }
 
 function equalClicked() {
-    if (!firstOperand || !operator || !secondOperand) {
+    if (firstOperand === undefined || 
+        operator === undefined || 
+        secondOperand === undefined) {
         console.log('operation is not complete yet!');
     } else {
         let result = operate(firstOperand, operator, secondOperand);
@@ -110,6 +112,7 @@ function buttonClick(event) {
     const numerical = '1234567890';
     const operators = '÷x-+';
     let currentButtonValue = event.target.textContent;
+    console.log(currentButtonValue)
 
     // Have two conditionals for backspace so that both the button itself
     // and the material icon click will invoke the backspace function
@@ -118,6 +121,7 @@ function buttonClick(event) {
     if (currentButtonValue === '=') return equalClicked();
     if (currentButtonValue === 'AC') return clearClicked();
     if (currentButtonValue === '.') return dotClicked();
+    if (currentButtonValue === '+/-') return invertNumber();
 
     if (numerical.includes(currentButtonValue)) {
         numericalClicked(currentButtonValue);
@@ -223,7 +227,19 @@ function keyDown(event) {
     if (event.code === 'Enter') {
         equalClicked();
     } else if (event.code === 'Escape') {
-        // Escape will be used for +/- button
+        invertNumber();
+    }
+}
+
+function invertNumber() {
+    if (currentStage === 'first operand' || currentStage === 'operator') {
+        if (!firstOperand) return;
+        firstOperand = -firstOperand;
+        display.value = firstOperand;
+    } else if (currentStage === 'second operand') {
+        if (!secondOperand) return;
+        secondOperand = -secondOperand;
+        display.value = secondOperand;
     }
 }
 
@@ -243,3 +259,6 @@ display.addEventListener('keydown', keyDown);
 buttons.forEach((button) => {
     button.addEventListener('click', buttonClick);
 });
+
+//fix calculator bugs
+// when second button is backspaced and empty, go back to operator selection
