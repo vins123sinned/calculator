@@ -175,7 +175,9 @@ function backspaceClicked() {
 function beforeInputChange(event) {
     const acceptedCharacters = '1234567890.+-/*';
     const numerals = '1234567890';
-    if (!acceptedCharacters.includes(event.data)) {
+    if (event.data === null) {
+        return
+    } else if (!acceptedCharacters.includes(event.data)) {
         event.preventDefault();
     }
     
@@ -217,6 +219,14 @@ function afterInputChange() {
     }
 }
 
+function keyDown(event) {
+    if (event.code === 'Enter') {
+        equalClicked();
+    } else if (event.code === 'Escape') {
+        // Escape will be used for +/- button
+    }
+}
+
 let operator;
 let firstOperand;
 let secondOperand;
@@ -226,7 +236,8 @@ const buttons = document.querySelectorAll('button');
 const display = document.querySelector('.display');
 
 display.addEventListener('beforeinput', beforeInputChange);
-display.addEventListener('input', afterInputChange)
+display.addEventListener('input', afterInputChange);
+display.addEventListener('keydown', keyDown);
 
 
 buttons.forEach((button) => {
