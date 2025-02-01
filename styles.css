@@ -82,5 +82,5 @@ button {
 }
 
 .active-operator {
-    background-color: #f8b353;
+    background-color: #f8b353 !important;
 }

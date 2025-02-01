@@ -18,6 +18,14 @@ function divide(num1, num2) {
     return parseFloat(num1) / parseFloat(num2);
 }
 
+function remainder(num1, num2) {
+    if (num2 === '0') {
+        setTimeout(clearClicked, 1000);
+        return 'Nonono 😎';
+    }
+    return parseFloat(num1) % parseFloat(num2);
+}
+
 function operate(operand1, operator, operand2) {
     switch(operator) {
         case '+':
@@ -28,6 +36,8 @@ function operate(operand1, operator, operand2) {
             return multiply(operand1, operand2);
         case '÷':
             return divide(operand1, operand2);
+        case '%':
+            return remainder(operand1, operand2)
         default:
             console.log('Error: No valid operator!');
     }
@@ -52,7 +62,6 @@ function numericalClicked(number) {
 function operatorClicked(input) {
     if (firstOperand === undefined) return;
     currentStage = 'operator';
-    console.log(currentStage)
 
     // Evaluate and display first pair of number
     if (secondOperand) {
@@ -102,17 +111,21 @@ function toggleOperator() {
         case '÷':
             findOperator = 'divide';
             break;
+        case '%':
+            findOperator = 'remainder';
+            break;
         default:
             console.log('Error: No valid operator!');
     }
 
+    if (findOperator === undefined) return;
     const operatorButton = document.querySelector(`.${findOperator}`);
     operatorButton.classList.toggle('active-operator');
 }
 
 function buttonClick(event) {
     const numerical = '1234567890';
-    const operators = '÷x-+';
+    const operators = '÷x-+%';
     let currentButtonValue = event.target.textContent;
 
     // Have two conditionals for backspace so that both the button itself
@@ -184,7 +197,7 @@ function backspaceClicked() {
 }
 
 function beforeInputChange(event) {
-    const acceptedCharacters = '1234567890.+-/*';
+    const acceptedCharacters = '1234567890.+-/*%';
     const numerals = '1234567890';
     if (event.data === null) {
         return
@@ -201,7 +214,8 @@ function beforeInputChange(event) {
     } else if (event.data === '+' ||
         event.data === '-' ||
         event.data === '*' ||
-        event.data === '/') {
+        event.data === '/' ||
+        event.data === '%') {
             event.preventDefault();
             if (event.data === '/') {
                 operatorClicked('÷');
